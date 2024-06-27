@@ -24,6 +24,8 @@ function App() {
   //   setNumbers(number => !number);
   // }
   //ESTO DE ARRIBA VAMOS A USARLO CON LA FUNCION SORTCOUNTRY
+  const [filterCountrySearchBar, setFilterCountrySearchBar] = useState<string | null>(null);
+
   const toggleColors = () => {
     setShowColors(!showColors);
   }
@@ -56,13 +58,25 @@ function App() {
     .catch(error => console.log(error))
   }, [])
 
+  //Ahora teniendo filteredUsers, en la funcion de abajo de sortedUsers, cuando vamos a hacer el sort, ya no lo haremos sobre
+  //[...users], ahora sera sobre filteredUsers
+  const filteredUsers = filterCountrySearchBar ? users.filter(el => el.location.country.toLowerCase().includes(filterCountrySearchBar.toLowerCase())) : users;
+  //Aqui arriba usamos mejor el includes() en vez del === ya que con el includes con tan solo poner una palabra comenzara el filtrado
+  //en vez de si ponemos el === osease users.filter(el => el.location.country.toLowerCase() === filterCountrySearchBar.toLowerCase()))
+  //este solo funcionara y escribimos TODO el nombre del pais, osea si ponemos ger, no aparecera nada en la lista, hasta poner germany
+  //es donde ya aparecera algo
+
   //Aqui en el sort, el sort nos muta el array original, por eso usamos el spread en users (osease [...users])
   //Aparte con el sort y dandole una funcion y usando localCompare dentro de esa funcion nos va a hacer sort al country
   //Si sortByCountry es true entonces haz el sort, de otra manera pasale los users tal cual estan
-  const sortedUsers = sortByCountry ? [...users].sort((a,b) => {
-    return a.location.country.localeCompare(b.location.country);
-  }) : users;
+  // const sortedUsers = sortByCountry ? [...users].sort((a,b) => {
+  //   return a.location.country.localeCompare(b.location.country);
+  // }) : users;
   //Esto de arriba se lo pasamos al componente UsersList
+
+  const sortedUsers = sortByCountry ? [...filteredUsers].sort((a,b) => {
+    return a.location.country.localeCompare(b.location.country);
+  }) : filteredUsers; //<-----------Este es para que si no esta activo el boton de ordenar por pais igual se pueda filtrar al teclear
 
   return (
     <>
@@ -72,6 +86,7 @@ function App() {
           <button onClick={toggleColors}>Colorear Filas</button>
           <button onClick={sortCountry}>{sortByCountry ? 'No Ordenar por Pais' : 'Ordenar por Pais'}</button>
           <button onClick={handleReset}>Resetear Usuarios</button>
+          <input onChange={e => setFilterCountrySearchBar(e.target.value)} type="search" placeholder='Filtra por Pais' />
         </header>
         <main>
           <UsersList handleDelete={handleDelete} showColors={showColors} users={sortedUsers} />
