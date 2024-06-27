@@ -23,11 +23,12 @@ function App() {
   // const toggleNumber = () => {
   //   setNumbers(number => !number);
   // }
+  //ESTO DE ARRIBA VAMOS A USARLO CON LA FUNCION SORTCOUNTRY
   const toggleColors = () => {
     setShowColors(!showColors);
   }
   const sortCountry = () => {
-    setSortByCountry(!sortByCountry);
+    setSortByCountry(prevState => !prevState);
   }
 
   const handleDelete = (email: string) : void => {
