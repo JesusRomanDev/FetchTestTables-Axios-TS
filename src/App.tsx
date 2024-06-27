@@ -22,6 +22,13 @@ function App() {
     setSortByCountry(!sortByCountry);
   }
 
+  const handleDelete = (email: string) : void => {
+    const updatedUsers = users.filter((user) => {
+      return user.email !== email
+    })
+    console.log(updatedUsers);
+    setUsers(updatedUsers);
+  }
   
   useEffect(()=>{
     axios.get('https://randomuser.me/api/?results=100')
@@ -51,7 +58,7 @@ function App() {
           <button onClick={sortCountry}>{sortByCountry ? 'No Ordenar por Pais' : 'Ordenar por Pais'}</button>
         </header>
         <main>
-          <UsersList showColors={showColors} users={sortedUsers} />
+          <UsersList handleDelete={handleDelete} showColors={showColors} users={sortedUsers} />
         </main>
       </div>
     </>

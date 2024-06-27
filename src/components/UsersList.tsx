@@ -10,8 +10,9 @@ import { User } from "../types"
 interface Props {
     users: User[];
     showColors: boolean;
+    handleDelete: (email: string) => void
 }
-const UsersList = ({users, showColors}: Props) => {
+const UsersList = ({handleDelete, users, showColors}: Props) => {
     // console.log(users);
   return (
     <table width='100%'>
@@ -32,12 +33,12 @@ const UsersList = ({users, showColors}: Props) => {
                 //Si showColors es true entonces aplicale ese color y asignaselo a la variable color
                 const color = showColors ? backgroundColor : ''
             return (
-                <tr style={{backgroundColor: color}} key={index}>
+                <tr style={{backgroundColor: color}} key={user.email}>
                     <td><img src={user.picture.thumbnail} alt="" /></td>
                     <td>{user.name.first}</td>
                     <td>{user.name.last}</td>
                     <td>{user.location.country}</td>
-                    <td><button>Borrar</button></td>
+                    <td><button onClick={() => handleDelete(user.email)}>Borrar</button></td>
                 </tr>
             )})}
         </tbody>
