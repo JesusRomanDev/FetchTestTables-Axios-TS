@@ -28,10 +28,16 @@ const UsersList = ({handleDelete, users, showColors}: Props) => {
         <tbody>
             {users.map((user, index) => {
                 // console.log(index);
+                //Primera Opcion
                 //Asignando si el indice con modulo de 2 da 0 entonces se le aplica una clase u otra
                 const backgroundColor = index % 2 === 0 ? '#333' : '#555';
-                //Si showColors es true entonces aplicale ese color y asignaselo a la variable color
+                // //Si showColors es true entonces aplicale ese color y asignaselo a la variable color
                 const color = showColors ? backgroundColor : ''
+
+                //Segunda Opcion
+                //Darle un classname a tr como lo siguiente className={showColors ? 'showColors' : ''}
+                //Y agregar las clases en App.css con el nth:child(2), igual vete a App.css para ver como seria
+
             return (
                 <tr style={{backgroundColor: color}} key={user.email}>
                     <td><img src={user.picture.thumbnail} alt="" /></td>

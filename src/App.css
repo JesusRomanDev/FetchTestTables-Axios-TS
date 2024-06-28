@@ -41,4 +41,20 @@
   color: #888;
 }
 
+/*Segunda opcion*/
+/* .showColors:nth-child(2n){
+  background-color: #fff;
+}
 
+.showColors:nth-child(2n+1){
+  background-color: #f84e4e;
+} */
+
+/* O usando el ODD y EVEN
+/* .showColors:nth-child(odd){
+  background-color: #fff;
+}
+
+.showColors:nth-child(even){
+  background-color: #f84e4e;
+} */

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import './App.css'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { User } from './types';
 import UsersList from './components/UsersList';
 
@@ -60,7 +60,7 @@ function App() {
 
   //Ahora teniendo filteredUsers, en la funcion de abajo de sortedUsers, cuando vamos a hacer el sort, ya no lo haremos sobre
   //[...users], ahora sera sobre filteredUsers
-  const filteredUsers = filterCountrySearchBar ? users.filter(el => el.location.country.toLowerCase().includes(filterCountrySearchBar.toLowerCase())) : users;
+  // const filteredUsers = filterCountrySearchBar ? users.filter(el => el.location.country.toLowerCase().includes(filterCountrySearchBar.toLowerCase())) : users;
   //Aqui arriba usamos mejor el includes() en vez del === ya que con el includes con tan solo poner una palabra comenzara el filtrado
   //en vez de si ponemos el === osease users.filter(el => el.location.country.toLowerCase() === filterCountrySearchBar.toLowerCase()))
   //este solo funcionara y escribimos TODO el nombre del pais, osea si ponemos ger, no aparecera nada en la lista, hasta poner germany
@@ -74,9 +74,22 @@ function App() {
   // }) : users;
   //Esto de arriba se lo pasamos al componente UsersList
 
-  const sortedUsers = sortByCountry ? [...filteredUsers].sort((a,b) => {
-    return a.location.country.localeCompare(b.location.country);
-  }) : filteredUsers; //<-----------Este es para que si no esta activo el boton de ordenar por pais igual se pueda filtrar al teclear
+  // const sortedUsers = sortByCountry ? [...filteredUsers].sort((a,b) => {
+  //   return a.location.country.localeCompare(b.location.country);
+  // }) : filteredUsers; //<-----------Este es para que si no esta activo el boton de ordenar por pais igual se pueda filtrar al teclear
+
+  //Usando useMemo para evitar renderizados
+
+  const filteredUsers = useMemo(()=>{
+    return filterCountrySearchBar ? users.filter(el => el.location.country.toLowerCase().includes(filterCountrySearchBar.toLowerCase())) : users;
+
+  },[users, filterCountrySearchBar]) 
+
+  const sortedUsers = useMemo(()=>{
+      return sortByCountry ? [...filteredUsers].sort((a,b) => {
+      return a.location.country.localeCompare(b.location.country);
+    }) : filteredUsers; //<-----------Este es para que si no esta activo el boton de ordenar por pais igual se pueda filtrar al teclear
+  },[filteredUsers, sortByCountry]) 
 
   return (
     <>
