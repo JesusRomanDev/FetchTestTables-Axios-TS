@@ -58,3 +58,11 @@
 .showColors:nth-child(even){
   background-color: #f84e4e;
 } */
+
+header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:28px;
+  margin-bottom: 40px;
+}

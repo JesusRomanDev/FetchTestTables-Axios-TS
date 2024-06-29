@@ -1,4 +1,10 @@
 import { User } from "../types"
+enum SortBy{
+    NONE= 'none',
+    NAME= 'name',
+    LAST= 'last',
+    COUNTRY= 'country'
+  }
 //Aqui creamos esta interface con el nombre de Props porque estamos dicendole en los parametros del componente que 
 //sera tipado siendo un User[] pero como se esta usando el destructuring es como si fueramos a destructurar tambien el type
 //por eso se creo esa interface de Props, entonces destructurando de Props vamos a tener un users 
@@ -10,18 +16,19 @@ import { User } from "../types"
 interface Props {
     users: User[];
     showColors: boolean;
-    handleDelete: (email: string) => void
+    handleDelete: (email: string) => void;
+    handleChangeSort: (sort: SortBy) => void;
 }
-const UsersList = ({handleDelete, users, showColors}: Props) => {
-    // console.log(users);
+const UsersList = ({handleChangeSort, handleDelete, users, showColors}: Props) => {
+    console.log(users);
   return (
     <table width='100%'>
         <thead>
             <tr>
                 <th>Foto</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Pais</th>
+                <th onClick={()=> handleChangeSort(SortBy.NAME)}>Nombre</th>
+                <th onClick={()=> handleChangeSort(SortBy.LAST)}>Apellido</th>
+                <th onClick={()=> handleChangeSort(SortBy.COUNTRY)}>Pais</th>
                 <th>Acciones</th>
             </tr>
         </thead>

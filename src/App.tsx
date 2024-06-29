@@ -5,9 +5,16 @@ import { User } from './types';
 import UsersList from './components/UsersList';
 
 function App() {
+  enum SortBy{
+    NONE= 'none',
+    NAME= 'name',
+    LAST= 'last',
+    COUNTRY= 'country'
+  }
+
   const [users, setUsers] = useState<User[]>([]);
   const [showColors, setShowColors] = useState(false);
-  const [sortByCountry, setSortByCountry] = useState(false);
+  const [sorting, setSorting] = useState<SortBy>(SortBy.NONE);
   //Este estado de abajo es para cuando se le da click al boton y queremos resetear los usuarios eliminados(como estaban al inicio)
   //En conjunto con la funcion handleReset y activandolo en el useEffect cuando carga nuestro componente
   //useRef es para guardar un valor que queremos que se comparta entre renderizados pero que al cambiar(si es que cambia o lo mandamos cambiar con algo asi ref.current = nuevoValor), no vuelva a renderizar el 
@@ -30,7 +37,12 @@ function App() {
     setShowColors(!showColors);
   }
   const sortCountry = () => {
-    setSortByCountry(prevState => !prevState);
+    //Hay que recordar que el operador ternario siempre retorna algo, en este caso se evalua y si es verdadero retorna
+    //SortBy.COUNTRY, si es falso retorna SortBy.NONE, hacia donde lo retorna? Hacia la variable newSorting
+    const newSorting = sorting === SortBy.NONE ? SortBy.COUNTRY : SortBy.NONE;
+    console.log(newSorting);
+    setSorting(newSorting);
+    // setSortByCountry(prevState => !prevState);
   }
 
   const handleDelete = (email: string) : void => {
@@ -85,11 +97,40 @@ function App() {
 
   },[users, filterCountrySearchBar]) 
 
+  //Esta funcion de abajo nos daba problemas debido a que no habiamos puesto un return explicito, osease todo se evaluaba
+  //con puros ifs, pero nada que no fuera un IF, entonces solo se corrigio mas abajo estableciendo que si ninguno de esos
+  //ifs era, entonces retornaba los filteredUsers
+  //-------------------------------MAL----------------------------
+  // const sortedUsers = useMemo(()=>{
+  //   if(sorting === SortBy.NONE) return filteredUsers
+  //   if(sorting === SortBy.COUNTRY) {return [...filteredUsers].sort((a,b) => {
+  //     return a.location.country.localeCompare(b.location.country);
+  //   })}
+  //   if(sorting === SortBy.NAME){ return [...filteredUsers].sort((a,b) => {
+  //     return a.name.first.localeCompare(b.name.first);
+  //   })}
+  //   if(sorting === SortBy.LAST){ return [...filteredUsers].sort((a,b) => {
+  //     return a.name.last.localeCompare(b.name.last);
+  //   })}
+  // },[filteredUsers, SortBy.COUNTRY, SortBy.NAME, SortBy.LAST, sorting]) 
+  
+  //---------------------------------BIEN--------------------------
   const sortedUsers = useMemo(()=>{
-      return sortByCountry ? [...filteredUsers].sort((a,b) => {
+    if(sorting === SortBy.COUNTRY) {return [...filteredUsers].sort((a,b) => {
       return a.location.country.localeCompare(b.location.country);
-    }) : filteredUsers; //<-----------Este es para que si no esta activo el boton de ordenar por pais igual se pueda filtrar al teclear
-  },[filteredUsers, sortByCountry]) 
+    })}
+    if(sorting === SortBy.NAME){ return [...filteredUsers].sort((a,b) => {
+      return a.name.first.localeCompare(b.name.first);
+    })}
+    if(sorting === SortBy.LAST){ return [...filteredUsers].sort((a,b) => {
+      return a.name.last.localeCompare(b.name.last);
+    })}
+    return filteredUsers
+  },[filteredUsers, SortBy.COUNTRY, SortBy.NAME, SortBy.LAST, sorting]) 
+
+  const handleChangeSort = (sort: SortBy) => {
+    setSorting(sort); //aqui cambia el valor de sorting, entonces se ejecuta la funcion de arriba
+  }
 
   return (
     <>
@@ -97,12 +138,12 @@ function App() {
         <h1>Prueba Tecnica Tablas</h1>
         <header>
           <button onClick={toggleColors}>Colorear Filas</button>
-          <button onClick={sortCountry}>{sortByCountry ? 'No Ordenar por Pais' : 'Ordenar por Pais'}</button>
+          <button onClick={sortCountry}>{sorting === SortBy.COUNTRY ? 'No Ordenar por Pais' : 'Ordenar por Pais'}</button>
           <button onClick={handleReset}>Resetear Usuarios</button>
           <input onChange={e => setFilterCountrySearchBar(e.target.value)} type="search" placeholder='Filtra por Pais' />
         </header>
         <main>
-          <UsersList handleDelete={handleDelete} showColors={showColors} users={sortedUsers} />
+          <UsersList handleChangeSort={handleChangeSort} handleDelete={handleDelete} showColors={showColors} users={sortedUsers} />
         </main>
       </div>
     </>
