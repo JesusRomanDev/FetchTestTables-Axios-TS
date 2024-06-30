@@ -16,3 +16,40 @@ Here are the steps to follow:
 ## Keys que aprendi
 * Cuando dentro de una funcion comenzamos a usar algun if, a fuerzas debe haber un RETURN EXPLICITO, porque los ifs son implicitos, uno piensa que puede caer en esa opcion, pero si en ninguno de los ifs cae? Debe existir esa posibilidad, algun return fuera de todo if, de lo contrario nos daria error
 * Usar useRef para almacenar un valor y que no cambie entre renderizados, y cuando usamos la funcion handleReset usar ese valor almacenado
+
+* Como se estructura una table, primero va el atributo table luego thead y tbody, dentro de thead va un tr y dentro de tr va un th,
+luego dentro de tbody va otro tr y dentro de tr va td
+Explicación de los elementos:
+table: Define el inicio de la tabla.
+thead: Contiene el encabezado de la tabla.
+tr: Define una fila en la tabla.
+th: Define una celda de encabezado en una tabla.
+tbody: Contiene el cuerpo de la tabla.
+td: Define una celda de datos en la tabla. 
+
+<table>
+  <thead>
+    <tr>
+      <th>Encabezado 1</th>
+      <th>Encabezado 2</th>
+      <th>Encabezado 3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Dato 1.1</td>
+      <td>Dato 1.2</td>
+      <td>Dato 1.3</td>
+    </tr>
+    <tr>
+      <td>Dato 2.1</td>
+      <td>Dato 2.2</td>
+      <td>Dato 2.3</td>
+    </tr>
+    <tr>
+      <td>Dato 3.1</td>
+      <td>Dato 3.2</td>
+      <td>Dato 3.3</td>
+    </tr>
+  </tbody>
+</table>
