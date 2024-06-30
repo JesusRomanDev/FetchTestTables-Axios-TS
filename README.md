@@ -12,3 +12,7 @@ Here are the steps to follow:
 - [] Avoid sorting users again the data when the user is changing filter by country.
 - [] Sort by clicking on the column header.
 - [] Provide a README.md file with instructions on how to run the application.
+
+## Keys que aprendi
+* Cuando dentro de una funcion comenzamos a usar algun if, a fuerzas debe haber un RETURN EXPLICITO, porque los ifs son implicitos, uno piensa que puede caer en esa opcion, pero si en ninguno de los ifs cae? Debe existir esa posibilidad, algun return fuera de todo if, de lo contrario nos daria error
+* Usar useRef para almacenar un valor y que no cambie entre renderizados, y cuando usamos la funcion handleReset usar ese valor almacenado
